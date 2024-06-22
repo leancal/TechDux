@@ -1,10 +1,13 @@
 package com.duxsoftware.pruebatecnica.auth;
 
-import com.duxsoftware.pruebatecnica.users.Role;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.duxsoftware.pruebatecnica.jwt.JwtService;
+import com.duxsoftware.pruebatecnica.users.Role;
 import com.duxsoftware.pruebatecnica.users.User;
 import com.duxsoftware.pruebatecnica.users.UserRepository;
 
@@ -15,30 +18,29 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
-        }
-
+        authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.getToken(user);
-        return new AuthResponse(token);
+        return AuthResponse.builder()
+                .token(token)
+                .build();
     }
 
     public AuthResponse register(RegisterRequest request) {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER) // Asumiendo que tienes una enumeración de roles
+                .role(Role.USER)
                 .build();
-
         userRepository.save(user);
-        String token = jwtService.getToken(user);
-        return new AuthResponse(token);
+        return AuthResponse.builder()
+                .token(jwtService.getToken(user))
+                .build();
     }
+
 }

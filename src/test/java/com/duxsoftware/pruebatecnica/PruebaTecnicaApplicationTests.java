@@ -1,4 +1,6 @@
-package com.duxsoftware.pruebatecnica;
+package com.duxsoftware.pruebatecnica.service;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.SpringBootConfiguration;
 
-import com.duxsoftware.pruebatecnica.models.Equipo;
-import com.duxsoftware.pruebatecnica.repositories.IEquipoRepository;
+import com.duxsoftware.pruebatecnica.model.Equipo;
+import com.duxsoftware.pruebatecnica.repository.EquipoRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,14 +23,10 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootConfiguration
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class PruebaTecnicaApplicationTests {
+class EquipoServiceTest {
 
 	@Mock
-	private IEquipoRepository iEquipoRepository;
+	private EquipoRepository EquipoRepository;
 
 	@InjectMocks
 	private EquipoService equipoService;
@@ -69,7 +67,7 @@ class PruebaTecnicaApplicationTests {
 	@Test
 	void testCrearEquipo() {
 		//createEquipo
-		when(iEquipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
+		when(EquipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
 		Equipo mockEquipoCreado = equipoService.createEquipo(mockEquipo);
 		assertNotNull(mockEquipoCreado);
 		assertEquals(mockEquipo, mockEquipoCreado);
@@ -78,7 +76,7 @@ class PruebaTecnicaApplicationTests {
 	@Test
 	void testUpdateEquipo() {
 		//updateEquipo
-		when(iEquipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
+		when(EquipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
 		Equipo mockEquipoMod = equipoService.updateEquipo(mockEquipo);
 		assertNotNull(mockEquipoMod);
 		assertEquals(mockEquipo, mockEquipoMod);
@@ -87,7 +85,7 @@ class PruebaTecnicaApplicationTests {
 	@Test
 	void testFindById() {
 		//findById
-		when(iEquipoRepository.findById(99)).thenReturn(Optional.of(mockEquipo));
+		when(EquipoRepository.findById(99)).thenReturn(Optional.of(mockEquipo));
 		Optional<Equipo> optionalEquipo = equipoService.findById(99);
 		assertTrue(optionalEquipo.isPresent());
 		Equipo equipo = optionalEquipo.get();
@@ -100,7 +98,7 @@ class PruebaTecnicaApplicationTests {
 
 	@Test
 	void testFindById_EquipoNoEncontrado() {
-		when(iEquipoRepository.findById(99)).thenReturn(Optional.empty());
+		when(EquipoRepository.findById(99)).thenReturn(Optional.empty());
 		Optional<Equipo> optionalEquipo = equipoService.findById(99);
 		assertFalse(optionalEquipo.isPresent());
 	}
@@ -109,7 +107,7 @@ class PruebaTecnicaApplicationTests {
 	void testFindEquipos() {
 		//findEquipos
 		this.cargaMocks();
-		when(iEquipoRepository.findAll()).thenReturn(equipos);
+		when(EquipoRepository.findAll()).thenReturn(equipos);
 		List<Equipo> listaEquiposRetornados = equipoService.findEquipos();
 		assertNotNull(listaEquiposRetornados);
 		assertTrue(!listaEquiposRetornados.isEmpty());
@@ -120,7 +118,7 @@ class PruebaTecnicaApplicationTests {
 	@Test
 	void testFindByNombre() {
 		//findByNombre
-		when(iEquipoRepository.findByNombre("Real Madrid")).thenReturn(Optional.of(mockEquipo));
+		when(EquipoRepository.findByNombre("Real Madrid")).thenReturn(Optional.of(mockEquipo));
 		Optional<Equipo> optionalEquipo = equipoService.findByNombre("Real Madrid");
 		assertTrue(optionalEquipo.isPresent());
 		Equipo equipo = optionalEquipo.get();
@@ -133,7 +131,7 @@ class PruebaTecnicaApplicationTests {
 
 	@Test
 	void testFindByNombre_EquipoNoEncontrado() {
-		when(iEquipoRepository.findByNombre("Nombre")).thenReturn(Optional.empty());
+		when(EquipoRepository.findByNombre("Nombre")).thenReturn(Optional.empty());
 		Optional<Equipo> optionalEquipo = equipoService.findByNombre("Nombre");
 		assertFalse(optionalEquipo.isPresent());
 	}
@@ -152,7 +150,7 @@ class PruebaTecnicaApplicationTests {
 	@Test
 	void testFindByLiga_LigaNoEncontrado() {
 		this.cargaMocks();
-		when(iEquipoRepository.findByLiga("Liga Liga")).thenReturn(new ArrayList<>());
+		when(EquipoRepository.findByLiga("Liga Liga")).thenReturn(new ArrayList<>());
 		List<Equipo> listEquipo = equipoService.findByLiga("Liga Liga");
 		assertTrue(listEquipo.isEmpty());
 	}
@@ -161,7 +159,7 @@ class PruebaTecnicaApplicationTests {
 	void testFindByPais() {
 		//findByPais
 		this.cargaMocks();
-		when(iEquipoRepository.findByPais("España")).thenReturn(equipos);
+		when(EquipoRepository.findByPais("España")).thenReturn(equipos);
 		List<Equipo> listaEquiposRetornados = equipoService.findByPais("España");
 		assertNotNull(listaEquiposRetornados);
 		assertTrue(!listaEquiposRetornados.isEmpty());
@@ -171,7 +169,7 @@ class PruebaTecnicaApplicationTests {
 	@Test
 	void testFindByPais_PaisNoEncontrado() {
 		this.cargaMocks();
-		when(iEquipoRepository.findByPais("Pais Pais")).thenReturn(new ArrayList<>());
+		when(EquipoRepository.findByPais("Pais Pais")).thenReturn(new ArrayList<>());
 		List<Equipo> listEquipo = equipoService.findByPais("Pais Pais");
 		assertTrue(listEquipo.isEmpty());
 	}
@@ -180,6 +178,6 @@ class PruebaTecnicaApplicationTests {
 	void testDeleteEquipoPorId() {
 		//deleteEquipoPorId
 		equipoService.deleteEquipoPorId(1);
-		verify(iEquipoRepository, times(1)).deleteById(1);
+		verify(EquipoRepository, times(1)).deleteById(1);
 	}
 }

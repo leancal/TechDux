@@ -1,44 +1,55 @@
 package com.duxsoftware.pruebatecnica.service;
 
-import com.duxsoftware.pruebatecnica.model.Equipo;
-import com.duxsoftware.pruebatecnica.repository.EquipoRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.duxsoftware.pruebatecnica.model.Equipo;
+import com.duxsoftware.pruebatecnica.repository.EquipoRepository;
 
 @Service
 public class EquipoService {
 
+    private EquipoRepository EquipoRepository;
+
     @Autowired
-    private EquipoRepository equipoRepository;
-
-    public List<Equipo> getAllEquipos() {
-        return equipoRepository.findAll();
+    public EquipoService(EquipoRepository EquipoRepository) {
+        this.EquipoRepository = EquipoRepository;
     }
 
-    public Optional<Equipo> getEquipoById(Long id) {
-        return equipoRepository.findById(id);
+    public Equipo createEquipo(Equipo equipo) throws IllegalArgumentException {
+        return EquipoRepository.save(equipo);
     }
 
-    public Equipo createEquipo(Equipo equipo) {
-        return equipoRepository.save(equipo);
+    public Equipo updateEquipo(Equipo equipo) {
+        return EquipoRepository.save(equipo);
     }
 
-    public void deleteEquipo(Long id) {
-        equipoRepository.deleteById(id);
+    public Optional<Equipo> findById(Integer id){
+        return EquipoRepository.findById(id);
     }
 
-    public List<Equipo> searchEquipos(String nombre, String liga, String pais) {
-        if (nombre != null) {
-            return equipoRepository.findByNombreContainingIgnoreCase(nombre);
-        } else if (liga != null) {
-            return equipoRepository.findByLigaContainingIgnoreCase(liga);
-        } else if (pais != null) {
-            return equipoRepository.findByPaisContainingIgnoreCase(pais);
-        } else {
-            return equipoRepository.findAll();
-        }
+    public List<Equipo> findEquipos(){
+        return EquipoRepository.findAll();
     }
+
+    public Optional<Equipo> findByNombre(String nombre){
+        return EquipoRepository.findByNombre(nombre);
+    }
+
+    public List<Equipo> findByLiga(String liga){
+        return EquipoRepository.findByLiga(liga);
+    }
+
+    public List<Equipo> findByPais(String pais)
+    {
+        return EquipoRepository.findByPais(pais);
+    }
+
+    public void deleteEquipoPorId(Integer id) {
+        EquipoRepository.deleteById(id);
+    }
+
 }

@@ -1,18 +1,23 @@
 package com.duxsoftware.pruebatecnica.repository;
 
-import com.duxsoftware.pruebatecnica.model.Equipo;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.duxsoftware.pruebatecnica.model.Equipo;
+
 
 @Repository
-public interface EquipoRepository extends JpaRepository<Equipo, Long> {
+public interface EquipoRepository extends JpaRepository<Equipo, Integer>{
 
-    List<Equipo> findByNombreContainingIgnoreCase(String nombre);
+    Optional<Equipo> findById(Integer id);
 
-    List<Equipo> findByLigaContainingIgnoreCase(String liga);
+    Optional<Equipo> findByNombre(String nombre);
 
-    List<Equipo> findByPaisContainingIgnoreCase(String pais);
+    List<Equipo> findByLiga(String liga);
+
+    List<Equipo> findByPais(String pais);
 
 }
