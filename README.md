@@ -39,7 +39,7 @@ Las consultas las podemos realizar en http://localhost:8080/h2-console. Iniciand
 
 ```bash
 {
-  JDBC URL: jdbc:h2:mem:bd
+  JDBC URL: jdbc:h2:mem:testdb
   User Name: sa
   Password: 
 }
