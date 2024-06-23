@@ -18,17 +18,17 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
+
     @Operation(summary = "Logueo", description = "Verifica el Usuario")
-    @PostMapping(value="login")
+    @PostMapping(value = "login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
     @Operation(summary = "Registro", description = "Registra un nuevo Usuario")
-    @PostMapping(value="register")
+    @PostMapping(value = "register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
-
 
 }

@@ -1,6 +1,5 @@
 package com.duxsoftware.pruebatecnica.service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +14,7 @@ import org.springframework.boot.SpringBootConfiguration;
 import com.duxsoftware.pruebatecnica.model.Equipo;
 import com.duxsoftware.pruebatecnica.repository.EquipoRepository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,16 +22,14 @@ import static org.mockito.Mockito.*;
 class EquipoServiceTest {
 
 	@Mock
-	private EquipoRepository EquipoRepository;
+	private EquipoRepository equipoRepository;
 
 	@InjectMocks
 	private EquipoService equipoService;
 
-	private Equipo mockEquipo = new Equipo(1, "Real Madrid", "La Liga", "España");
+	private final Equipo mockEquipo = new Equipo(1, "Real Madrid", "La Liga", "España");
 
-	private List<Equipo> equipos = new ArrayList<>();
-
-
+	private final List<Equipo> equipos = new ArrayList<>();
 
 	void cargaMocks() {
 		equipos.add(new Equipo(1, "Real Madrid", "La Liga", "España"));
@@ -66,8 +60,8 @@ class EquipoServiceTest {
 
 	@Test
 	void testCrearEquipo() {
-		//createEquipo
-		when(EquipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
+		// createEquipo
+		when(equipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
 		Equipo mockEquipoCreado = equipoService.createEquipo(mockEquipo);
 		assertNotNull(mockEquipoCreado);
 		assertEquals(mockEquipo, mockEquipoCreado);
@@ -75,8 +69,8 @@ class EquipoServiceTest {
 
 	@Test
 	void testUpdateEquipo() {
-		//updateEquipo
-		when(EquipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
+		// updateEquipo
+		when(equipoRepository.save(mockEquipo)).thenReturn(mockEquipo);
 		Equipo mockEquipoMod = equipoService.updateEquipo(mockEquipo);
 		assertNotNull(mockEquipoMod);
 		assertEquals(mockEquipo, mockEquipoMod);
@@ -84,8 +78,8 @@ class EquipoServiceTest {
 
 	@Test
 	void testFindById() {
-		//findById
-		when(EquipoRepository.findById(99)).thenReturn(Optional.of(mockEquipo));
+		// findById
+		when(equipoRepository.findById(99)).thenReturn(Optional.of(mockEquipo));
 		Optional<Equipo> optionalEquipo = equipoService.findById(99);
 		assertTrue(optionalEquipo.isPresent());
 		Equipo equipo = optionalEquipo.get();
@@ -98,27 +92,26 @@ class EquipoServiceTest {
 
 	@Test
 	void testFindById_EquipoNoEncontrado() {
-		when(EquipoRepository.findById(99)).thenReturn(Optional.empty());
+		when(equipoRepository.findById(99)).thenReturn(Optional.empty());
 		Optional<Equipo> optionalEquipo = equipoService.findById(99);
 		assertFalse(optionalEquipo.isPresent());
 	}
 
 	@Test
 	void testFindEquipos() {
-		//findEquipos
+		// findEquipos
 		this.cargaMocks();
-		when(EquipoRepository.findAll()).thenReturn(equipos);
+		when(equipoRepository.findAll()).thenReturn(equipos);
 		List<Equipo> listaEquiposRetornados = equipoService.findEquipos();
 		assertNotNull(listaEquiposRetornados);
-		assertTrue(!listaEquiposRetornados.isEmpty());
-		assertTrue(listaEquiposRetornados.size()>0);
+		assertFalse(listaEquiposRetornados.isEmpty());
+		assertTrue(listaEquiposRetornados.size() > 0);
 	}
-
 
 	@Test
 	void testFindByNombre() {
-		//findByNombre
-		when(EquipoRepository.findByNombre("Real Madrid")).thenReturn(Optional.of(mockEquipo));
+		// findByNombre
+		when(equipoRepository.findByNombre("Real Madrid")).thenReturn(Optional.of(mockEquipo));
 		Optional<Equipo> optionalEquipo = equipoService.findByNombre("Real Madrid");
 		assertTrue(optionalEquipo.isPresent());
 		Equipo equipo = optionalEquipo.get();
@@ -131,53 +124,53 @@ class EquipoServiceTest {
 
 	@Test
 	void testFindByNombre_EquipoNoEncontrado() {
-		when(EquipoRepository.findByNombre("Nombre")).thenReturn(Optional.empty());
+		when(equipoRepository.findByNombre("Nombre")).thenReturn(Optional.empty());
 		Optional<Equipo> optionalEquipo = equipoService.findByNombre("Nombre");
 		assertFalse(optionalEquipo.isPresent());
 	}
 
 	@Test
 	void testFindByLiga() {
-		//findByLiga
+		// findByLiga
 		this.cargaMocks();
-		when(equipoService.findByLiga("La Liga")).thenReturn(equipos);
+		when(equipoRepository.findByLiga("La Liga")).thenReturn(equipos);
 		List<Equipo> listaEquiposRetornados = equipoService.findByLiga("La Liga");
 		assertNotNull(listaEquiposRetornados);
-		assertTrue(!listaEquiposRetornados.isEmpty());
-		assertTrue(listaEquiposRetornados.size()>0);
+		assertFalse(listaEquiposRetornados.isEmpty());
+		assertTrue(listaEquiposRetornados.size() > 0);
 	}
 
 	@Test
 	void testFindByLiga_LigaNoEncontrado() {
 		this.cargaMocks();
-		when(EquipoRepository.findByLiga("Liga Liga")).thenReturn(new ArrayList<>());
+		when(equipoRepository.findByLiga("Liga Liga")).thenReturn(new ArrayList<>());
 		List<Equipo> listEquipo = equipoService.findByLiga("Liga Liga");
 		assertTrue(listEquipo.isEmpty());
 	}
 
 	@Test
 	void testFindByPais() {
-		//findByPais
+		// findByPais
 		this.cargaMocks();
-		when(EquipoRepository.findByPais("España")).thenReturn(equipos);
+		when(equipoRepository.findByPais("España")).thenReturn(equipos);
 		List<Equipo> listaEquiposRetornados = equipoService.findByPais("España");
 		assertNotNull(listaEquiposRetornados);
-		assertTrue(!listaEquiposRetornados.isEmpty());
-		assertTrue(listaEquiposRetornados.size()>0);
+		assertFalse(listaEquiposRetornados.isEmpty());
+		assertTrue(listaEquiposRetornados.size() > 0);
 	}
 
 	@Test
 	void testFindByPais_PaisNoEncontrado() {
 		this.cargaMocks();
-		when(EquipoRepository.findByPais("Pais Pais")).thenReturn(new ArrayList<>());
+		when(equipoRepository.findByPais("Pais Pais")).thenReturn(new ArrayList<>());
 		List<Equipo> listEquipo = equipoService.findByPais("Pais Pais");
 		assertTrue(listEquipo.isEmpty());
 	}
 
 	@Test
 	void testDeleteEquipoPorId() {
-		//deleteEquipoPorId
+		// deleteEquipoPorId
 		equipoService.deleteEquipoPorId(1);
-		verify(EquipoRepository, times(1)).deleteById(1);
+		verify(equipoRepository, times(1)).deleteById(1);
 	}
 }

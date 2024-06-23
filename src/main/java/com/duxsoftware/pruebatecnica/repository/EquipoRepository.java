@@ -2,15 +2,12 @@ package com.duxsoftware.pruebatecnica.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import com.duxsoftware.pruebatecnica.model.Equipo;
 
-
 @Repository
-public interface EquipoRepository extends JpaRepository<Equipo, Integer>{
+public interface EquipoRepository extends JpaRepository<Equipo, Integer> {
 
     Optional<Equipo> findById(Integer id);
 
@@ -20,4 +17,5 @@ public interface EquipoRepository extends JpaRepository<Equipo, Integer>{
 
     List<Equipo> findByPais(String pais);
 
+    List<Equipo> findByNombreContaining(String nombre);
 }
