@@ -1,14 +1,6 @@
 DUX SOFTWARE | PRUEBA TÉCNICA 
 =======
 
-## Tecnologías Utilizadas
-
-- Spring Boot
-- JWT (JSON Web Tokens)
-- Swagger
-- Docker
-- Base de datos H2 (en memoria)
-
 ## Instrucciones
 
 Podras acceder a la aplicación en http://localhost:8080 
