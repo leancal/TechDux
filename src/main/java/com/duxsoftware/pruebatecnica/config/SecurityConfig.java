@@ -35,7 +35,9 @@ public class SecurityConfig {
                                 .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers("/equipos/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/auth/**").permitAll() // Asegúrate de que /auth/** esté permitido
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/auth/login").permitAll()
+                                .requestMatchers("/auth/register").permitAll()
                                 .anyRequest().authenticated())
 
                 .sessionManagement(sessionManager ->

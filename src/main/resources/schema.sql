@@ -8,7 +8,7 @@ role VARCHAR(255)
 );
 
 
-INSERT INTO users (username, password, role, id) VALUES ('test', '12345', 'ADMIN',1);
+INSERT INTO users (username, password, role, id) VALUES ('test', '12345', 'USER',1);
 
 DROP TABLE IF EXISTS EQUIPOS;
 CREATE TABLE IF NOT EXISTS equipos (
@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS equipos (
     liga VARCHAR(255),
     pais VARCHAR(255)
 );
+
 
 INSERT INTO equipos (nombre, liga, pais) VALUES
 ('Real Madrid', 'La Liga', 'España'),
